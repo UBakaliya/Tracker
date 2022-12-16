@@ -29,9 +29,9 @@ int main()
         {
 
         case 'A':
-            cout << "\nEnter company name: ";
+            cout << "\nEnter company 'name': ";
             getline(cin, companyName);
-            cout << "\nEnter Month (i.e 1..12): ";
+            cout << "Enter 'Month' (i.e 1..12): ";
             cin >> month;
             if (month.length() < 1 || month.length() > 2)
             {
@@ -39,7 +39,7 @@ int main()
                 month.clear();
                 continue;
             }
-            cout << "\nEnter Day (i.e 1..30): ";
+            cout << "Enter 'Day' (i.e 1..30): ";
             cin >> day;
             if (day.length() < 1 || day.length() > 2)
             {
@@ -47,7 +47,7 @@ int main()
                 day.clear();
                 continue;
             }
-            cout << "\nEnter Year (i.e 1..30): ";
+            cout << "Enter 'Year' (i.e 1..30): ";
             cin >> year;
             if (year.length() < 4 || year.length() > 4)
             {
