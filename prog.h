@@ -48,25 +48,21 @@ public:
 
 void Prog::displayDB()
 {
-    cout << "  --------------------------------" << endl;
-    cout << "    Total companies applied: " << this->dataBase.size() << endl;
+    cout << "* Total companies applied: " << this->dataBase.size() << endl;
     int totalC = 1;
-    cout << "  --------------------------------" << endl;
-    cout << "  | Company Name  |  [Date]      |" << endl;
-    cout << "  --------------------------------" << endl;
+    cout << "-------------------------" << endl;
+    cout << " Company Name  |  [Date]      " << endl;
+    cout << "-------------------------" << endl;
     for (const auto &i : this->dataBase)
     {
         string date = to_string(i.second);
         cout << totalC << "."
-             << "| " << i.first << "  "
-             << " ["
-             << date[0] << date[1] << '-' << date[2] << date[3] << '-'
-             << date[4] << date[5] << date[6] << date[7]
-             << "]"
+             << ": " << i.first << " [" << date[0] << date[1] << '-'
+             << date[2] << date[3] << '-' << date[4] << date[5]
+             << date[6] << date[7] << "]"
              << endl;
         totalC++;
     }
-    cout << "  --------------------------------" << endl;
 }
 
 void Prog::addCompany(string companyName, int date)
