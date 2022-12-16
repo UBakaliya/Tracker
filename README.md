@@ -15,3 +15,10 @@
   * The name of the company
   * A list of users who have applied to the company
 
+
+Launch your Terminal and clone the repository. Clone it by using following command: 
+```
+git clone https://github.com/ubaka2/Mini-Search-Engine.git
+```
+After downloading the application, identify the place where it was downloaded to get started.
+Call ```make run``` on your console to start the program. Enjoy 😉.
