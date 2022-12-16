@@ -12,6 +12,6 @@
 ## Searching for a Company
 * The user can search for a specific company in the database. 
 * When the user searches for a company, the program displays information about the company, including:
-** The name of the company
-** A list of users who have applied to the company
+  * The name of the company
+  * A list of users who have applied to the company
 
