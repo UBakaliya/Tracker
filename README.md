@@ -6,8 +6,8 @@
 ## Adding a Company
 * The user inputs the name of a company they have applied to.
 * The program checks the database to see if the company already exists.
-** If the company does not exist in the database, the program adds the company to the database.
-** If the company does exist in the database, the program displays a message indicating that the company has already been added.
+  * If the company does not exist in the database, the program adds the company to the database.
+  * If the company does exist in the database, the program displays a message indicating that the company has already been added.
 
 ## Searching for a Company
 * The user can search for a specific company in the database. 
