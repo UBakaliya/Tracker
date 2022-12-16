@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "*.cpp": "cpp",
+        "makefile": "makefile",
+        "iosfwd": "cpp",
+        "ostream": "cpp",
+        "unordered_map": "cpp",
+        "map": "cpp",
+        "iostream": "cpp",
+        "istream": "cpp"
+    }
+}
