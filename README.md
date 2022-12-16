@@ -18,7 +18,7 @@
 
 Launch your Terminal and clone the repository. Clone it by using following command: 
 ```
-git clone https://github.com/ubaka2/Mini-Search-Engine.git
+https://github.com/ubaka2/Tracker.git
 ```
 After downloading the application, identify the place where it was downloaded to get started.
 Call ```make run``` on your console to start the program. Enjoy 😉.
