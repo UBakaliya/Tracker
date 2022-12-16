@@ -1,3 +1,9 @@
+/**
+ * @file prog.h
+ * @author Uvaish Bakliya
+ * @date 2022-12-16
+ * @copyright Copyright (c)UB 2022
+ */
 #pragma once
 
 #include <cctype>
@@ -10,7 +16,7 @@ using namespace std;
 class Prog
 {
 private:
-    map<string, int> dataBase;
+    map<string, string> dataBase;
 
     void readFile()
     {
@@ -25,7 +31,7 @@ private:
         getline(inFile, date, '\n');
         while (!inFile.eof())
         {
-            this->dataBase[companyName] = stoi(date);
+            this->dataBase[companyName] = date;
             getline(inFile, companyName, ':');
             getline(inFile, date, '\n');
         }
@@ -38,12 +44,15 @@ private:
         outfile << name << ":" << date;
         outfile.close();
     }
+    void addCompany(string companyName, string date);
 
 public:
     Prog() { this->readFile(); }
+    ~Prog() { this->dataBase.clear(); }
     void displayDB();
-    void addCompany(string companyName, int date);
     void searchCompany(string companyName);
+    void addCompanyFully();
+    int go();
 };
 
 void Prog::displayDB()
@@ -51,11 +60,11 @@ void Prog::displayDB()
     cout << "* Total companies applied: " << this->dataBase.size() << endl;
     int totalC = 1;
     cout << "-------------------------" << endl;
-    cout << " Company Name  |  [Date]      " << endl;
+    cout << " Company Name  |  [Date] " << endl;
     cout << "-------------------------" << endl;
     for (const auto &i : this->dataBase)
     {
-        string date = to_string(i.second);
+        string date = i.second;
         cout << totalC << ": " << i.first << " [" << date[0] << date[1]
              << '-' << date[2] << date[3] << '-' << date[4] << date[5]
              << date[6] << date[7] << "]"
@@ -64,50 +73,109 @@ void Prog::displayDB()
     }
 }
 
-void Prog::addCompany(string companyName, int date)
+void Prog::addCompany(string companyName, string date)
 {
     if (this->dataBase.find(companyName) != this->dataBase.end())
     {
-        cout << "Company Is already in data base, are you sure you want to added it again?" << endl;
-        cout << "[Y]es OR [N]o: ";
-        char conf;
-        cin >> conf;
-        conf = toupper(conf);
-        switch (conf)
-        {
-        case 'Y':
-            cout << "\n*** NOTE: Company Won't be added again, but the date will be change. ***\n"
-                 << endl;
-            break;
-        case 'N':
-            return;
-            break;
-        default:
-            cout << "Invalid Entry." << endl;
-            break;
-        }
+        cout << "IMPORTANT: Company Is already in data base." << endl;
+        return;
     }
     this->dataBase[companyName] = date;
-    this->writeInFile(companyName, to_string(date) + "\n");
-    cout << "\n*** Successfully added! ***\n"
-         << endl;
+    this->writeInFile(companyName, date + "\n");
+    cout << "\n*** Successfully added! ***" << endl;
 }
 
 void Prog::searchCompany(string companyName)
 {
-    this->dataBase.clear();
-    this->readFile();
     if (this->dataBase.find(companyName) == this->dataBase.end())
     {
         cout << "*** Non Found ***" << endl;
         return;
     }
-    string date = to_string(dataBase[companyName]);
-    cout << "Company name: " << companyName
+    string date = this->dataBase[companyName];
+    cout << "Name: " << companyName
          << "\nDate: "
          << " ["
          << date[0] << date[1] << '-' << date[2] << date[3] << '-'
          << date[4] << date[5] << date[6] << date[7]
          << ']'
          << endl;
+}
+
+void Prog::addCompanyFully()
+{
+    string companyName, date, month = "00", day = "00", year;
+    cout << "\nEnter company 'name': ";
+    getline(cin, companyName);
+    cout << "Enter 'Month' (i.e 1..12): ";
+    cin >> month;
+    if (month.length() < 1 || month.length() > 2)
+    {
+        cout << "Invalid 'Month'" << endl;
+        return;
+    }
+    cout << "Enter 'Day' (i.e 1..30): ";
+    cin >> day;
+    if (day.length() < 1 || day.length() > 2)
+    {
+        cout << "Invalid 'Day'" << endl;
+        return;
+    }
+    cout << "Enter 'Year' (i.e 1..30): ";
+    cin >> year;
+    if (year.length() < 4 || year.length() > 4)
+    {
+        cout << "Invalid 'Year'" << endl;
+        return;
+    }
+    if (day.length() == 1)
+        day.insert(0, "0");
+    if (month.length() == 1)
+        month.insert(0, "0");
+    date = (month + day + year);
+    this->addCompany(companyName, date);
+}
+
+int Prog::go()
+{
+    system("clear");
+    cout << ("\033[1;36m") << "*** Welcome to \"Applied Tracker\"! ***" << endl;
+    while (true)
+    {
+        char menuOptions;
+        string companyName;
+        cout << "\nMenu Options:\n"
+             << " 1. [A]dd companies\n"
+             << " 2. [S]earch company\n"
+             << " 3. [D]isplay\n"
+             << " 4. [Q]uit\n"
+             << "Your Option--> ";
+        cin >> menuOptions;
+        menuOptions = toupper(menuOptions);
+        cin.ignore();
+        switch (menuOptions)
+        {
+        case 'A':
+            addCompanyFully();
+            break;
+        case 'S':
+            cout << "\nEnter company name: ";
+            getline(cin, companyName);
+            cout << endl;
+            searchCompany(companyName);
+            break;
+        case 'D':
+            cout << endl;
+            displayDB();
+            break;
+        case 'Q':
+            cout << "\nExiting..." << endl;
+            exit(0);
+            break;
+        default:
+            cout << "\nInvalid entry. Try again!" << endl;
+            break;
+        }
+    }
+    return 0;
 }
