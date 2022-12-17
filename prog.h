@@ -40,7 +40,7 @@ private:
 
     void writeInFile(string name, string date)
     {
-        fstream outfile = fstream("database.txt", ios_base::app);
+        fstream outfile = fstream("database.csv", ios_base::app);
         outfile << name << "," << date;
         outfile.close();
     }
