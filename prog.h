@@ -6,7 +6,6 @@
  */
 #pragma once
 
-#include <cctype>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -58,18 +57,16 @@ public:
 void Prog::displayDB()
 {
     cout << "* Total companies applied: " << this->dataBase.size() << endl;
-    int totalC = 1;
     cout << "-------------------------" << endl;
     cout << " Company Name  |  [Date] " << endl;
     cout << "-------------------------" << endl;
     for (const auto &i : this->dataBase)
     {
         string date = i.second;
-        cout << totalC << ": " << i.first << " [" << date[0] << date[1]
+        cout << "> " << i.first << " [" << date[0] << date[1]
              << '-' << date[2] << date[3] << '-' << date[4] << date[5]
              << date[6] << date[7] << "]"
              << endl;
-        totalC++;
     }
 }
 
@@ -77,7 +74,7 @@ void Prog::addCompany(string companyName, string date)
 {
     if (this->dataBase.find(companyName) != this->dataBase.end())
     {
-        cout << "IMPORTANT: Company Is already in data base. You can't apply again." << endl;
+        cout << "\n* IMPORTANT: YOU HAVE ALREADY APPLIED FOR A JOB WITH THE COMPANY. YOU ARE INELIGIBLE TO REAPPLY." << endl;
         return;
     }
     this->dataBase[companyName] = date;
@@ -89,7 +86,7 @@ void Prog::searchCompany(string companyName)
 {
     if (this->dataBase.find(companyName) == this->dataBase.end())
     {
-        cout << "*** Non Found ***" << endl;
+        cout << "\n* NONE FOUND. YOU MAY APPLY." << endl;
         return;
     }
     string date = this->dataBase[companyName];
@@ -139,7 +136,7 @@ void Prog::addCompanyFully()
 int Prog::go()
 {
     system("clear");
-    cout << ("\033[1;36m") << "*** Welcome to \"Applied Tracker\"! ***" << endl;
+    cout << ("\033[1;36m") << "*** Welcome to 'Applied Tracker' ***" << endl;
     while (true)
     {
         char menuOptions;
