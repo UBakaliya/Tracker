@@ -9,30 +9,30 @@
 #include <cctype>
 #include <fstream>
 #include <iostream>
-#include <map>
 #include <string>
+#include <unordered_map>
 using namespace std;
 
 class Prog
 {
 private:
-    map<string, string> dataBase;
+    unordered_map<string, string> dataBase;
 
     void readFile()
     {
-        ifstream inFile("database.txt");
+        ifstream inFile("database.csv");
         string companyName, date;
         if (inFile.fail())
         {
             cout << "Invalid File" << endl;
             exit(0);
         }
-        getline(inFile, companyName, ':');
+        getline(inFile, companyName, ',');
         getline(inFile, date, '\n');
         while (!inFile.eof())
         {
             this->dataBase[companyName] = date;
-            getline(inFile, companyName, ':');
+            getline(inFile, companyName, ',');
             getline(inFile, date, '\n');
         }
         inFile.close();
@@ -41,7 +41,7 @@ private:
     void writeInFile(string name, string date)
     {
         fstream outfile = fstream("database.txt", ios_base::app);
-        outfile << name << ":" << date;
+        outfile << name << "," << date;
         outfile.close();
     }
     void addCompany(string companyName, string date);
@@ -77,7 +77,7 @@ void Prog::addCompany(string companyName, string date)
 {
     if (this->dataBase.find(companyName) != this->dataBase.end())
     {
-        cout << "IMPORTANT: Company Is already in data base." << endl;
+        cout << "IMPORTANT: Company Is already in data base. You can't apply again." << endl;
         return;
     }
     this->dataBase[companyName] = date;
