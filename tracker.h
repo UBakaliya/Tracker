@@ -91,7 +91,7 @@ void Tracker::searchCompany(string companyName)
     }
     string date = dataBase[companyName];
     cout << "Name: " << companyName << "\nDate: "
-         << " [" << dataBase[companyName] << ']' << endl;
+         << "[" << dataBase[companyName] << ']' << endl;
 }
 
 int go()
