@@ -59,7 +59,7 @@ void Tracker::displayDB()
     cout << " Company Name  |  [Date]  " << endl;
     cout << "--------------------------" << endl;
     for (const auto &i : dataBase)
-        cout << "> " << i.first << " - [" << i.second << "]" << endl;
+        cout << "> " << i.first << " =~= [" << i.second << "]" << endl;
 }
 
 void Tracker::addCompany()
