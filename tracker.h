@@ -51,15 +51,14 @@ public:
     void displayDB();
     void searchCompany(string companyName);
     void addCompanyFully();
-    int go();
 };
 
 void Tracker::displayDB()
 {
     cout << "* Total companies applied: " << this->dataBase.size() << endl;
-    cout << "-------------------------" << endl;
-    cout << " Company Name  |  [Date] " << endl;
-    cout << "-------------------------" << endl;
+    cout << "--------------------------" << endl;
+    cout << " Company Name  |  [Date]  " << endl;
+    cout << "--------------------------" << endl;
     for (const auto &i : this->dataBase)
     {
         string date = i.second;
@@ -133,8 +132,9 @@ void Tracker::addCompanyFully()
     this->addCompany(companyName, date);
 }
 
-int Tracker::go()
+int go()
 {
+    Tracker runProg;
     system("clear");
     cout << ("\033[1;36m") << "*** Welcome to 'Applied Tracker' ***" << endl;
     while (true)
@@ -153,17 +153,17 @@ int Tracker::go()
         switch (menuOptions)
         {
         case 'A':
-            addCompanyFully();
+            runProg.addCompanyFully();
             break;
         case 'S':
             cout << "\nEnter company name: ";
             getline(cin, companyName);
             cout << endl;
-            searchCompany(companyName);
+            runProg.searchCompany(companyName);
             break;
         case 'D':
             cout << endl;
-            displayDB();
+            runProg.displayDB();
             break;
         case 'Q':
             cout << "\nExiting..." << endl;
