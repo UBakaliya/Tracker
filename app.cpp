@@ -5,10 +5,10 @@
  * @date 2022-12-16
  * @copyright Copyright (c)UB 2022
  */
-#include "prog.h"
+#include "tracker.h"
 
 int main()
 {
-    Prog runProg;
+    Tracker runProg;
     return runProg.go();
 }

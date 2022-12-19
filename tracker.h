@@ -1,5 +1,5 @@
 /**
- * @file prog.h
+ * @file Tracker.h
  * @author Uvaish Bakliya
  * @date 2022-12-16
  * @copyright Copyright (c)UB 2022
@@ -12,7 +12,7 @@
 #include <unordered_map>
 using namespace std;
 
-class Prog
+class Tracker
 {
 private:
     unordered_map<string, string> dataBase;
@@ -46,15 +46,15 @@ private:
     void addCompany(string companyName, string date);
 
 public:
-    Prog() { this->readFile(); }
-    ~Prog() { this->dataBase.clear(); }
+    Tracker() { this->readFile(); }
+    ~Tracker() { this->dataBase.clear(); }
     void displayDB();
     void searchCompany(string companyName);
     void addCompanyFully();
     int go();
 };
 
-void Prog::displayDB()
+void Tracker::displayDB()
 {
     cout << "* Total companies applied: " << this->dataBase.size() << endl;
     cout << "-------------------------" << endl;
@@ -63,14 +63,14 @@ void Prog::displayDB()
     for (const auto &i : this->dataBase)
     {
         string date = i.second;
-        cout << "> " << i.first << " [" << date[0] << date[1]
+        cout << "> " << i.first << " ~ [" << date[0] << date[1]
              << '-' << date[2] << date[3] << '-' << date[4] << date[5]
              << date[6] << date[7] << "]"
              << endl;
     }
 }
 
-void Prog::addCompany(string companyName, string date)
+void Tracker::addCompany(string companyName, string date)
 {
     if (this->dataBase.find(companyName) != this->dataBase.end())
     {
@@ -82,7 +82,7 @@ void Prog::addCompany(string companyName, string date)
     cout << "\n*** Successfully added! ***" << endl;
 }
 
-void Prog::searchCompany(string companyName)
+void Tracker::searchCompany(string companyName)
 {
     if (this->dataBase.find(companyName) == this->dataBase.end())
     {
@@ -99,7 +99,7 @@ void Prog::searchCompany(string companyName)
          << endl;
 }
 
-void Prog::addCompanyFully()
+void Tracker::addCompanyFully()
 {
     string companyName, date, month = "00", day = "00", year;
     cout << "\nEnter company 'name': ";
@@ -133,7 +133,7 @@ void Prog::addCompanyFully()
     this->addCompany(companyName, date);
 }
 
-int Prog::go()
+int Tracker::go()
 {
     system("clear");
     cout << ("\033[1;36m") << "*** Welcome to 'Applied Tracker' ***" << endl;
