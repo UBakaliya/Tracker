@@ -30,7 +30,7 @@ private:
         getline(inFile, date, '\n');
         while (!inFile.eof())
         {
-            this->dataBase[companyName] = date;
+            dataBase[companyName] = date;
             getline(inFile, companyName, ',');
             getline(inFile, date, '\n');
         }
@@ -43,23 +43,23 @@ private:
         outfile << name << "," << date;
         outfile.close();
     }
-    void addCompany(string companyName, string date);
 
 public:
-    Tracker() { this->readFile(); }
-    ~Tracker() { this->dataBase.clear(); }
+    Tracker() { readFile(); }
+    ~Tracker() { dataBase.clear(); }
     void displayDB();
+    void addCompany(string companyName, string date);
     void searchCompany(string companyName);
-    void addCompanyFully();
+    bool addCompanyFully();
 };
 
 void Tracker::displayDB()
 {
-    cout << "* Total companies applied: " << this->dataBase.size() << endl;
+    cout << "* Total companies applied: " << dataBase.size() << endl;
     cout << "--------------------------" << endl;
     cout << " Company Name  |  [Date]  " << endl;
     cout << "--------------------------" << endl;
-    for (const auto &i : this->dataBase)
+    for (const auto &i : dataBase)
     {
         string date = i.second;
         cout << "> " << i.first << " ~ [" << date[0] << date[1]
@@ -71,24 +71,24 @@ void Tracker::displayDB()
 
 void Tracker::addCompany(string companyName, string date)
 {
-    if (this->dataBase.find(companyName) != this->dataBase.end())
+    if (dataBase.find(companyName) != dataBase.end())
     {
         cout << "\n* IMPORTANT: YOU HAVE ALREADY APPLIED FOR A JOB WITH THE COMPANY. YOU ARE INELIGIBLE TO REAPPLY." << endl;
         return;
     }
-    this->dataBase[companyName] = date;
-    this->writeInFile(companyName, date + "\n");
+    dataBase[companyName] = date;
+    writeInFile(companyName, date + "\n");
     cout << "\n*** Successfully added! ***" << endl;
 }
 
 void Tracker::searchCompany(string companyName)
 {
-    if (this->dataBase.find(companyName) == this->dataBase.end())
+    if (dataBase.find(companyName) == dataBase.end())
     {
-        cout << "\n* NONE FOUND. YOU MAY APPLY." << endl;
+        cout << "* NONE FOUND. YOU MAY APPLY." << endl;
         return;
     }
-    string date = this->dataBase[companyName];
+    string date = dataBase[companyName];
     cout << "Name: " << companyName
          << "\nDate: "
          << " ["
@@ -98,44 +98,45 @@ void Tracker::searchCompany(string companyName)
          << endl;
 }
 
-void Tracker::addCompanyFully()
+bool Tracker::addCompanyFully()
 {
-    string companyName, date, month = "00", day = "00", year;
+    string companyName, date, month, day, year;
     cout << "\nEnter company 'name': ";
     getline(cin, companyName);
-    cout << "Enter 'Month' (i.e 1..12): ";
+    cout << "Enter 'Month' (i.e 1-12): ";
     cin >> month;
-    if (month.length() < 1 || month.length() > 2)
+    if (stoi(month) < 1 || stoi(month) > 12)
     {
-        cout << "Invalid 'Month'" << endl;
-        return;
+        cout << "Invalid Month" << endl;
+        return false;
     }
-    cout << "Enter 'Day' (i.e 1..30): ";
+    cout << "Enter 'Day' (i.e 1-31): ";
     cin >> day;
-    if (day.length() < 1 || day.length() > 2)
+    if (stoi(day) < 1 || stoi(day) > 31)
     {
-        cout << "Invalid 'Day'" << endl;
-        return;
+        cout << "Invalid Day" << endl;
+        return false;
     }
-    cout << "Enter 'Year' (i.e 1..30): ";
+    cout << "Enter 'Year' (i.e 2022): ";
     cin >> year;
     if (year.length() < 4 || year.length() > 4)
     {
-        cout << "Invalid 'Year'" << endl;
-        return;
+        cout << "Invalid Year" << endl;
+        return false;
     }
     if (day.length() == 1)
         day.insert(0, "0");
     if (month.length() == 1)
         month.insert(0, "0");
     date = (month + day + year);
-    this->addCompany(companyName, date);
+    addCompany(companyName, date);
+    return true;
 }
 
 int go()
 {
-    Tracker runProg;
     system("clear");
+    Tracker runProg;
     cout << ("\033[1;36m") << "*** Welcome to 'Applied Tracker' ***" << endl;
     while (true)
     {
@@ -153,7 +154,8 @@ int go()
         switch (menuOptions)
         {
         case 'A':
-            runProg.addCompanyFully();
+            if (!runProg.addCompanyFully())
+                continue;
             break;
         case 'S':
             cout << "\nEnter company name: ";
@@ -166,7 +168,7 @@ int go()
             runProg.displayDB();
             break;
         case 'Q':
-            cout << "\nExiting..." << endl;
+            cout << "Exiting..." << endl;
             exit(0);
             break;
         default:
