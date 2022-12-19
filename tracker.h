@@ -19,38 +19,37 @@ private:
 
     void readFile()
     {
-        ifstream inFile("database.csv");
+        ifstream outFile("database.csv");
         string companyName, date;
-        if (inFile.fail())
+        if (outFile.fail())
         {
             cout << "Invalid File" << endl;
             exit(0);
         }
-        getline(inFile, companyName, ',');
-        getline(inFile, date, '\n');
-        while (!inFile.eof())
+        getline(outFile, companyName, ',');
+        getline(outFile, date, '\n');
+        while (!outFile.eof())
         {
             dataBase[companyName] = date;
-            getline(inFile, companyName, ',');
-            getline(inFile, date, '\n');
+            getline(outFile, companyName, ',');
+            getline(outFile, date, '\n');
         }
-        inFile.close();
+        outFile.close();
     }
 
     void writeInFile(string name, string date)
     {
-        fstream outfile = fstream("database.csv", ios_base::app);
-        outfile << name << "," << date;
-        outfile.close();
+        fstream inFile("database.csv", ios_base::app);
+        inFile << name << ',' << date << '\n';
+        inFile.close();
     }
 
 public:
     Tracker() { readFile(); }
     ~Tracker() { dataBase.clear(); }
     void displayDB();
-    void addCompany(string companyName, string date);
+    void addCompany();
     void searchCompany(string companyName);
-    bool addCompanyFully();
 };
 
 void Tracker::displayDB()
@@ -60,25 +59,27 @@ void Tracker::displayDB()
     cout << " Company Name  |  [Date]  " << endl;
     cout << "--------------------------" << endl;
     for (const auto &i : dataBase)
-    {
-        string date = i.second;
-        cout << "> " << i.first << " ~ [" << date[0] << date[1]
-             << '-' << date[2] << date[3] << '-' << date[4] << date[5]
-             << date[6] << date[7] << "]"
-             << endl;
-    }
+        cout << "> " << i.first << " - [" << i.second << "]" << endl;
 }
 
-void Tracker::addCompany(string companyName, string date)
+void Tracker::addCompany()
 {
+    string companyName;
+    cout << "\nEnter company 'name': ";
+    getline(cin, companyName);
     if (dataBase.find(companyName) != dataBase.end())
     {
         cout << "\n* IMPORTANT: YOU HAVE ALREADY APPLIED FOR A JOB WITH THE COMPANY. YOU ARE INELIGIBLE TO REAPPLY." << endl;
         return;
     }
+    time_t now = time(0);
+    // convert now to tm struct for UTC
+    tm *gmtm = gmtime(&now);
+    string date = asctime(gmtm);
+    date.pop_back();
     dataBase[companyName] = date;
-    writeInFile(companyName, date + "\n");
-    cout << "\n*** Successfully added! ***" << endl;
+    writeInFile(companyName, date);
+    cout << "\n* Successfully Added! *" << endl;
 }
 
 void Tracker::searchCompany(string companyName)
@@ -89,48 +90,8 @@ void Tracker::searchCompany(string companyName)
         return;
     }
     string date = dataBase[companyName];
-    cout << "Name: " << companyName
-         << "\nDate: "
-         << " ["
-         << date[0] << date[1] << '-' << date[2] << date[3] << '-'
-         << date[4] << date[5] << date[6] << date[7]
-         << ']'
-         << endl;
-}
-
-bool Tracker::addCompanyFully()
-{
-    string companyName, date, month, day, year;
-    cout << "\nEnter company 'name': ";
-    getline(cin, companyName);
-    cout << "Enter 'Month' (i.e 1-12): ";
-    cin >> month;
-    if (stoi(month) < 1 || stoi(month) > 12)
-    {
-        cout << "Invalid Month" << endl;
-        return false;
-    }
-    cout << "Enter 'Day' (i.e 1-31): ";
-    cin >> day;
-    if (stoi(day) < 1 || stoi(day) > 31)
-    {
-        cout << "Invalid Day" << endl;
-        return false;
-    }
-    cout << "Enter 'Year' (i.e 2022): ";
-    cin >> year;
-    if (year.length() < 4 || year.length() > 4)
-    {
-        cout << "Invalid Year" << endl;
-        return false;
-    }
-    if (day.length() == 1)
-        day.insert(0, "0");
-    if (month.length() == 1)
-        month.insert(0, "0");
-    date = (month + day + year);
-    addCompany(companyName, date);
-    return true;
+    cout << "Name: " << companyName << "\nDate: "
+         << " [" << dataBase[companyName] << ']' << endl;
 }
 
 int go()
@@ -154,8 +115,7 @@ int go()
         switch (menuOptions)
         {
         case 'A':
-            if (!runProg.addCompanyFully())
-                continue;
+            runProg.addCompany();
             break;
         case 'S':
             cout << "\nEnter company name: ";
