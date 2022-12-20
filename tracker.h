@@ -9,15 +9,15 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
+#include <map>
 #include <string>
-#include <unordered_map>
 using namespace std;
 
 class Tracker
 {
 private:
     // to store the data from the file
-    unordered_map<string, string> dataBase;
+    map<string, string> dataBase;
 
     void readFile()
     {
@@ -66,15 +66,16 @@ void Tracker::displayDB()
 
 void Tracker::addCompany()
 {
-    string companyName;
+    string companyName, tmpCompanyName;
     cout << "\nEnter company 'name': ";
     getline(cin, companyName);
-    transform(companyName.begin(), companyName.end(), companyName.begin(), ::tolower);
+    tmpCompanyName = companyName;
+    transform(tmpCompanyName.begin(), tmpCompanyName.end(), tmpCompanyName.begin(), ::tolower);
     for (const auto &i : dataBase)
     {
         string key = i.first;
         transform(key.begin(), key.end(), key.begin(), ::tolower);
-        if (key.find(companyName) != string::npos)
+        if (key.find(tmpCompanyName) != string::npos)
         {
             cout << "\n* IMPORTANT: YOU HAVE ALREADY APPLIED FOR A JOB WITH THE COMPANY. YOU ARE INELIGIBLE TO REAPPLY." << endl;
             return;
@@ -96,11 +97,9 @@ void Tracker::searchCompany(string companyName)
     for (const auto &i : dataBase)
     {
         string key = i.first;
-
         transform(key.begin(), key.end(), key.begin(), ::tolower);
         if (key.find(companyName) != string::npos)
         {
-            string date = dataBase[companyName];
             cout << "Name: " << i.first << "\nDate: "
                  << "[" << i.second << ']' << endl;
             return;
