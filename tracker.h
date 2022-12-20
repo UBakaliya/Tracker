@@ -6,6 +6,7 @@
  */
 #pragma once
 
+#include <algorithm>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -15,6 +16,7 @@ using namespace std;
 class Tracker
 {
 private:
+    // to store the data from the file
     unordered_map<string, string> dataBase;
 
     void readFile()
@@ -37,7 +39,7 @@ private:
         outFile.close();
     }
 
-    void writeInFile(string name, string date)
+    void writeFile(string name, string date)
     {
         fstream inFile("database.csv", ios_base::app);
         inFile << name << ',' << date << '\n';
@@ -47,8 +49,8 @@ private:
 public:
     Tracker() { readFile(); }
     ~Tracker() { dataBase.clear(); }
-    void displayDB();
-    void addCompany();
+    void displayDB();  // this will display all the company you have applied at and the time
+    void addCompany(); // to add the company in data base
     void searchCompany(string companyName);
 };
 
@@ -67,10 +69,16 @@ void Tracker::addCompany()
     string companyName;
     cout << "\nEnter company 'name': ";
     getline(cin, companyName);
-    if (dataBase.find(companyName) != dataBase.end())
+    transform(companyName.begin(), companyName.end(), companyName.begin(), ::tolower);
+    for (const auto &i : dataBase)
     {
-        cout << "\n* IMPORTANT: YOU HAVE ALREADY APPLIED FOR A JOB WITH THE COMPANY. YOU ARE INELIGIBLE TO REAPPLY." << endl;
-        return;
+        string key = i.first;
+        transform(key.begin(), key.end(), key.begin(), ::tolower);
+        if (key.find(companyName) != string::npos)
+        {
+            cout << "\n* IMPORTANT: YOU HAVE ALREADY APPLIED FOR A JOB WITH THE COMPANY. YOU ARE INELIGIBLE TO REAPPLY." << endl;
+            return;
+        }
     }
     time_t now = time(0);
     // convert now to tm struct for UTC
@@ -78,27 +86,34 @@ void Tracker::addCompany()
     string date = asctime(gmtm);
     date.pop_back();
     dataBase[companyName] = date;
-    writeInFile(companyName, date);
+    writeFile(companyName, date);
     cout << "\n* Successfully Added! *" << endl;
 }
 
 void Tracker::searchCompany(string companyName)
 {
-    if (dataBase.find(companyName) == dataBase.end())
+    transform(companyName.begin(), companyName.end(), companyName.begin(), ::tolower);
+    for (const auto &i : dataBase)
     {
-        cout << "* NONE FOUND. YOU MAY APPLY." << endl;
-        return;
+        string key = i.first;
+
+        transform(key.begin(), key.end(), key.begin(), ::tolower);
+        if (key.find(companyName) != string::npos)
+        {
+            string date = dataBase[companyName];
+            cout << "Name: " << i.first << "\nDate: "
+                 << "[" << i.second << ']' << endl;
+            return;
+        }
     }
-    string date = dataBase[companyName];
-    cout << "Name: " << companyName << "\nDate: "
-         << "[" << dataBase[companyName] << ']' << endl;
+    cout << "* NONE FOUND. YOU MAY APPLY." << endl;
 }
 
 int go()
 {
     system("clear");
     Tracker runProg;
-    cout << ("\033[1;36m") << "*** Welcome to 'Applied Tracker' ***" << endl;
+    cout << "*** Welcome to 'Applied Tracker' ***" << endl;
     while (true)
     {
         char menuOptions;
