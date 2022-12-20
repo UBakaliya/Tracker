@@ -58,10 +58,10 @@ void Tracker::displayDB()
 {
     cout << "* Total companies applied: " << dataBase.size() << endl;
     cout << "--------------------------" << endl;
-    cout << " Company Name  |  [Date]  " << endl;
+    cout << " Company Name  |  〔Date〕  " << endl;
     cout << "--------------------------" << endl;
     for (const auto &i : dataBase)
-        cout << "> " << i.first << " =~= [" << i.second << "]" << endl;
+        cout << "> " << i.first << " <~~> 〔" << i.second << "〕" << endl;
 }
 
 void Tracker::addCompany()
