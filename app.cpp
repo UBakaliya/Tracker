@@ -8,8 +8,4 @@
  */
 #include "tracker.h"
 
-int main()
-{
-    cout << "\033[0;32m";
-    return go();
-}
+int main() { return go(); }

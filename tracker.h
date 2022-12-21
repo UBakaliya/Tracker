@@ -69,6 +69,11 @@ void Tracker::addCompany()
     string companyName, tmpCompanyName;
     cout << "\nEnter company 'name': ";
     getline(cin, companyName);
+    if (companyName == "")
+    {
+        cout << "Try again!" << endl;
+        return;
+    }
     tmpCompanyName = companyName;
     transform(tmpCompanyName.begin(), tmpCompanyName.end(), tmpCompanyName.begin(), ::tolower);
     for (const auto &i : dataBase)
@@ -93,6 +98,11 @@ void Tracker::addCompany()
 
 void Tracker::searchCompany(string companyName)
 {
+    if (companyName == "")
+    {
+        cout << "Try again!" << endl;
+        return;
+    }
     transform(companyName.begin(), companyName.end(), companyName.begin(), ::tolower);
     for (const auto &i : dataBase)
     {
